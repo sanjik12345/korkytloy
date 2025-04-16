@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ғимарат есебі</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .quiz-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+        
+        .task-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            border-color: #3498db;
+            background: #f8fafc;
+        }
+        
+        .option.selected {
+            border-color: #3498db;
+            background: #e1f0fa;
+        }
+        
+        .option.correct {
+            border-color: #2ecc71;
+            background: #d4edda;
+        }
+        
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #f8d7da;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+        
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .progress {
+            text-align: center;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 20px;
+            margin: 25px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .mistakes-container {
+            margin-top: 30px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        
+        .mistake-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .mistake-question {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .user-answer {
+            color: #e74c3c;
+            margin: 5px 0;
+        }
+        
+        .correct-answer {
+            color: #2ecc71;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .visual-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .visual-btn:hover {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .chatgpt-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto 0;
+            background: linear-gradient(45deg, #10a37f, #1a7f64);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .chatgpt-btn:hover {
+            background: linear-gradient(45deg, #1a7f64, #10a37f);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .math-symbol {
+            font-family: "Times New Roman", serif;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1-есеп -->
+    <div id="quiz-1" class="quiz-container">
+        <div class="question">1-есеп: Ғимараттың 3D моделінің жалпы биіктігін табыңыз</div>
+        <img src="Gimarat.jpeg" class="task-image" alt="Ғимарат суреті">
+        <button class="visual-btn">3D модельді қарау</button>
+        
+        <div class="options">
+            <div class="option" data-correct="false">A) 2,5 м</div>
+            <div class="option" data-correct="false">B) 13 м</div>
+            <div class="option" data-correct="false">C) 15 м</div>
+            <div class="option" data-correct="true">D) 32,5 м</div>
+            <div class="option" data-correct="false">E) 37,5 м</div>
+        </div>
+    </div>
+    
+    <!-- 2-есеп -->
+    <div id="quiz-2" class="quiz-container hidden">
+        <div class="question">2-есеп: Ғимараттың 3D моделінің табан периметрін табыңыз</div>
+        <img src="Gimarat.jpeg" class="task-image" alt="Ғимарат суреті">
+        <button class="visual-btn">3D модельді қарау</button>
+        
+        <div class="options">
+            <div class="option" data-correct="false">A) 15 м</div>
+            <div class="option" data-correct="false">B) 32,5 м</div>
+            <div class="option" data-correct="true">C) 90 м</div>
+            <div class="option" data-correct="false">D) 37,5 м</div>
+            <div class="option" data-correct="false">E) 225 м</div>
+        </div>
+    </div>
+    
+    <!-- 3-есеп -->
+    <div id="quiz-3" class="quiz-container hidden">
+        <div class="question">3-есеп: Ғимараттың 3D моделінің табан ауданын табыңыз</div>
+        <img src="Gimarat.jpeg" class="task-image" alt="Ғимарат суреті">
+        <button class="visual-btn">3D модельді қарау</button>
+        
+        <div class="options">
+            <div class="option" data-correct="false">A) 337,5 м²</div>
+            <div class="option" data-correct="false">B) 3375 м²</div>
+            <div class="option" data-correct="true">C) 337,5<span class="math-symbol">√3</span> м²</div>
+            <div class="option" data-correct="false">D) 337,5<span class="math-symbol">√2</span> м²</div>
+            <div class="option" data-correct="false">E) 3375<span class="math-symbol">√3</span> м²</div>
+        </div>
+    </div>
+
+    <!-- 4-есеп -->
+    <div id="quiz-4" class="quiz-container hidden">
+        <div class="question">4-есеп: Ғимараттың 3D моделінің бүйір бетінің ауданын табыңыз</div>
+        <img src="Gimarat.jpeg" class="task-image" alt="Ғимарат суреті">
+        <button class="visual-btn">3D модельді қарау</button>
+        
+        <div class="options">
+            <div class="option" data-correct="true">A) 2925 м²</div>
+            <div class="option" data-correct="false">B) 292,5 м²</div>
+            <div class="option" data-correct="false">C) 29250 м²</div>
+            <div class="option" data-correct="false">D) 2925<span class="math-symbol">√2</span> м²</div>
+            <div class="option" data-correct="false">E) 2925<span class="math-symbol">√3</span> м²</div>
+        </div>
+    </div>
+
+    <!-- 5-есеп -->
+    <div id="quiz-5" class="quiz-container hidden">
+        <div class="question">5-есеп: Ғимараттың 3D моделінің кеңістікте иеленген көлемін табыңыз</div>
+        <img src="Gimarat.jpeg" class="task-image" alt="Ғимарат суреті">
+        <button class="visual-btn">3D модельді қарау</button>
+        
+        <div class="options">
+            <div class="option" data-correct="true">A) 10968,75<span class="math-symbol">√3</span> м³</div>
+            <div class="option" data-correct="false">B) 10968,75<span class="math-symbol">√2</span> м³</div>
+            <div class="option" data-correct="false">C) 10968,75 м³</div>
+            <div class="option" data-correct="false">D) 109687,5<span class="math-symbol">√3</span> м³</div>
+            <div class="option" data-correct="false">E) 1096875<span class="math-symbol">√3</span> м³</div>
+        </div>
+    </div>
+    
+    <div class="navigation">
+        <button id="prev-btn" class="nav-btn" disabled>← Артқа</button>
+        <button id="next-btn" class="nav-btn">Келесі →</button>
+    </div>
+    
+    <div class="progress">1-есеп 5-тен</div>
+    
+    <div id="final-result" class="result hidden"></div>
+    
+    <div id="mistakes-container" class="mistakes-container hidden">
+        <h3 style="text-align: center; margin-bottom: 15px; color: #e74c3c;">Қателерді талдау</h3>
+        <div id="mistakes-list"></div>
+    </div>
+    
+    <button id="chatgpt-btn" class="chatgpt-btn">Көмек алу</button>
+    
+    <script>
+        const quizzes = document.querySelectorAll('.quiz-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressText = document.querySelector('.progress');
+        const finalResult = document.getElementById('final-result');
+        const mistakesContainer = document.getElementById('mistakes-container');
+        const mistakesList = document.getElementById('mistakes-list');
+        const chatgptBtn = document.getElementById('chatgpt-btn');
+        const visualBtns = document.querySelectorAll('.visual-btn');
+        
+        let currentQuiz = 0;
+        const userAnswers = Array(quizzes.length).fill(null);
+        const correctAnswers = [3, 2, 2, 0, 0]; // Дұрыс жауаптардың индекстері (0-ден бастап)
+        
+        function showQuiz(index) {
+            quizzes.forEach((quiz, i) => {
+                quiz.classList.toggle('hidden', i !== index);
+            });
+            
+            progressText.textContent = `${index + 1}-есеп ${quizzes.length}-тен`;
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizzes.length - 1 ? 'Тестті аяқтау' : 'Келесі →';
+            
+            if (userAnswers[index] !== null) {
+                const options = quizzes[index].querySelectorAll('.option');
+                options[userAnswers[index]].classList.add('selected');
+            }
+        }
+        
+        quizzes.forEach(quiz => {
+            const options = quiz.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                option.addEventListener('click', () => {
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    userAnswers[Array.from(quizzes).indexOf(quiz)] = index;
+                });
+            });
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            if (currentQuiz > 0) {
+                currentQuiz--;
+                showQuiz(currentQuiz);
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (userAnswers[currentQuiz] === null) {
+                alert('Жауапты таңдаңыз!');
+                return;
+            }
+            
+            if (currentQuiz < quizzes.length - 1) {
+                currentQuiz++;
+                showQuiz(currentQuiz);
+            } else {
+                const score = userAnswers.reduce((acc, answer, index) => 
+                    acc + (answer === correctAnswers[index] ? 1 : 0), 0);
+                
+                finalResult.textContent = `Нәтиже: ${score} дұрыс жауап ${quizzes.length}-дан`;
+                finalResult.style.background = score === quizzes.length ? '#d4edda' : 
+                                           score >= quizzes.length / 2 ? '#fff3cd' : '#f8d7da';
+                finalResult.classList.remove('hidden');
+                
+                document.querySelector('.navigation').style.display = 'none';
+                progressText.style.display = 'none';
+                
+                quizzes.forEach((quiz, index) => {
+                    const options = quiz.querySelectorAll('.option');
+                    options[correctAnswers[index]].classList.add('correct');
+                    if (userAnswers[index] !== correctAnswers[index] && userAnswers[index] !== null) {
+                        options[userAnswers[index]].classList.add('incorrect');
+                    }
+                });
+                
+                showMistakes();
+            }
+        });
+        
+        function showMistakes() {
+            mistakesContainer.classList.remove('hidden');
+            mistakesList.innerHTML = '';
+            
+            let hasMistakes = false;
+            
+            userAnswers.forEach((answer, index) => {
+                if (answer !== correctAnswers[index]) {
+                    hasMistakes = true;
+                    const mistakeItem = document.createElement('div');
+                    mistakeItem.className = 'mistake-item';
+                    
+                    const questionText = quizzes[index].querySelector('.question').textContent;
+                    const correctOption = quizzes[index].querySelectorAll('.option')[correctAnswers[index]].textContent;
+                    const userOption = answer !== null ? quizzes[index].querySelectorAll('.option')[answer].textContent : 'Жауап жоқ';
+                    
+                    mistakeItem.innerHTML = `
+                        <div class="mistake-question">${index + 1}-есеп: ${questionText}</div>
+                        <div class="user-answer">Сіздің жауабыңыз: ${userOption}</div>
+                        <div class="correct-answer">Дұрыс жауап: ${correctOption}</div>
+                    `;
+                    
+                    mistakesList.appendChild(mistakeItem);
+                }
+            });
+            
+            if (!hasMistakes) {
+                mistakesList.innerHTML = '<div style="text-align: center; color: #2ecc71;">Тақырыпты жақсы меңгердіңіз! Барлық жауаптар дұрыс 🎉</div>';
+            }
+        }
+        
+        chatgptBtn.addEventListener('click', function() {
+            const questionNumber = currentQuiz + 1;
+            const questionText = document.querySelector(`#quiz-${questionNumber} .question`).textContent;
+            const questionOptions = Array.from(document.querySelectorAll(`#quiz-${questionNumber} .option`))
+                                      .map(opt => opt.textContent).join(', ');
+            const fullQuestion = `${questionText}\nНұсқалар: ${questionOptions}`;
+            const chatUrl = `https://chat.openai.com/?q=${encodeURIComponent(fullQuestion)}`;
+            window.open(chatUrl, '_blank');
+        });
+        
+        visualBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('3D модель көрсетілуде... Бұл ғимараттың құрылымын жақсырақ түсінуге көмектеседі.');
+            });
+        });
+        
+        showQuiz(0);
+    </script>
+</body>
+</html>
